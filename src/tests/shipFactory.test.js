@@ -35,10 +35,9 @@ test.skip("ship can sink if all coordinates are hit", () => {
     expect(newShip.getIsSunk()).toBe(true);
 })
 
-test.only("hit function returns the correct message", () => {
+test.skip("hit function returns the correct message", () => {
     let newShip = createShip("Patrol", 2, [2, 2], "x");
     newShip.setCoordinates();
-    expect(newShip.hit([1, 1])).toBe("Enemy attack has missed.");
     expect(newShip.hit([2, 2])).toBe("Patrol has been hit!!!");
     expect(newShip.hit([3, 2])).toBe("Patrol has been destroyed!!!");
 });
