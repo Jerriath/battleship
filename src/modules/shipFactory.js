@@ -14,6 +14,9 @@ export default function(name, length, position, axis) {
         getCoordinates: function() {return _coordinates},
         getIsSunk: function() {return _isSunk},
         //Mutator functions
+        setPosition: function(coordinates) {
+            _coordinates = coordinates;
+        },
         setPositionRand: function() {
             let valid = false;
             let position = null;
