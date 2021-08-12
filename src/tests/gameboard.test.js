@@ -45,5 +45,5 @@ test("can hit ships stored in the gameboard's ships array", () => {
     newBoard.placeShip(carrier);
     newBoard.placeShip(destroyer);
     expect(newBoard.receiveAttack([1, 1])).toBe("Carrier has been hit!!!");
-    expect(newBoard.getGameboard()[1][1]).toBe(true);
+    expect(newBoard.getBoard()[1][1]).toBe(true);
 });
