@@ -32,6 +32,33 @@ export default function() {
         placeShip: function(ship) {
             _shipArray.push(ship);
         },
+        placeShipRand: function(ship) {
+            let valid = this.checkValidShipCoords(ship);
+            while (!valid) {
+                ship.setPositionRand();
+                ship.setCoordinates();
+                valid = this.checkValidShipCoords(ship);
+            }
+            _shipArray.push(ship);
+        },
+        checkValidShipCoords: function(ship) {
+            let valid = true;
+            for (let i = 0; i < _shipArray.length; i++) {
+                for (let j = 0; j < _shipArray[i].getCoordinates().length; j++) {
+                    let coordsLength = ship.getCoordinates().length;
+                    for (let k = 0; k < coordsLength; k++) {
+                        let currentCompare = _shipArray[i].getCoordinates()[j];
+                        let currentCoord = ship.getCoordinates()[k];
+                        if (currentCompare[0] === currentCoord[0]) {
+                            if (currentCompare[1] === currentCoord[1]) {
+                                valid = false;
+                            }
+                        }
+                    }
+                }
+            }
+            return valid;
+        },
         receiveAttack: function(coordinate) {
             let message = "The attack has missed all ships.";
             _boardState[coordinate[0]][coordinate[1]] = true;

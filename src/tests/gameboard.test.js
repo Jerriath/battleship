@@ -2,7 +2,7 @@ import { expect } from "@jest/globals";
 import createGameboard from "../modules/gameboardFactory.js";
 import createShip from "../modules/shipFactory.js";
 
-test("creates appropriately sized gameboard with false values", () => {
+test.skip("creates appropriately sized gameboard with false values", () => {
     let newBoard = createGameboard();
     newBoard.initGameboard();
     expect(newBoard.getWidth()).toBe(10);
@@ -14,7 +14,7 @@ test("creates appropriately sized gameboard with false values", () => {
     }
 })
 
-test("gameboard can tell if all ships are sunk", () => {
+test.skip("gameboard can tell if all ships are sunk", () => {
     let newBoard = createGameboard();
     newBoard.initGameboard();
     let carrier = createShip("carrier", 5, [1, 1], "y");
@@ -35,7 +35,7 @@ test("gameboard can tell if all ships are sunk", () => {
     expect(newBoard.getStatus()).toBe(true);
 });
 
-test("can hit ships stored in the gameboard's ships array", () => {
+test.skip("can hit ships stored in the gameboard's ships array", () => {
     let newBoard = createGameboard();
     newBoard.initGameboard();
     let carrier = createShip("Carrier", 5, [1, 1], "y");
@@ -47,3 +47,28 @@ test("can hit ships stored in the gameboard's ships array", () => {
     expect(newBoard.receiveAttack([1, 1])).toBe("Carrier has been hit!!!");
     expect(newBoard.getBoard()[1][1]).toBe(true);
 });
+
+test("check valid coords works", () => {
+    let newBoard = createGameboard();
+    newBoard.initGameboard();
+    let carrier = createShip("Carrier", 5, [1, 1], "y");
+    let destroyer = createShip("Destroyer", 3, [0, 1], "x");
+    carrier.setCoordinates();
+    destroyer.setCoordinates();
+    newBoard.placeShip(carrier);
+    expect(newBoard.checkValidShipCoords(destroyer)).toBeFalsy();
+})
+
+test("can place ships randomly; placeShipRand() works", () => {
+    let newBoard = createGameboard();
+    newBoard.initGameboard();
+    let carrier = createShip("Carrier", 5, [1, 1], "y");
+    let destroyer = createShip("Destroyer", 3, [0, 1], "x");
+    carrier.setCoordinates();
+    destroyer.setCoordinates();
+    newBoard.placeShip(carrier);
+    newBoard.placeShipRand(destroyer);
+    console.log(carrier.getCoordinates());
+    console.log(destroyer.getCoordinates());
+    expect(newBoard.getShipArray().length).toBe(2);
+})

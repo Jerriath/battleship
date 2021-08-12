@@ -41,3 +41,10 @@ test.skip("hit function returns the correct message", () => {
     expect(newShip.hit([2, 2])).toBe("Patrol has been hit!!!");
     expect(newShip.hit([3, 2])).toBe("Patrol has been destroyed!!!");
 });
+
+test("testing setPositionRand", () => {
+    let newShip = createShip("Carrier", 5, null, null);
+    newShip.setPositionRand();
+    newShip.setCoordinates();
+    expect(newShip.getPosition()).toBeTruthy();
+})

@@ -14,8 +14,36 @@ export default function(name, length, position, axis) {
         getCoordinates: function() {return _coordinates},
         getIsSunk: function() {return _isSunk},
         //Mutator functions
+        setPositionRand: function() {
+            let valid = false;
+            let position = null;
+            let axis = "";
+            while(!valid) {
+                position = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
+                if (Math.random() >= 0.5) {
+                    axis = "x";
+                    if (position[0] + _length > 10) {
+                        continue;
+                    }
+                    else {
+                        valid = true;
+                    }
+                }
+                else {
+                    axis = "y";
+                    if (position[1] + _length > 10) {
+                        continue;
+                    }
+                    else {
+                        valid = true;
+                    }
+                }
+            }
+            _position = position;
+            _axis = axis;
+        },
         setCoordinates: function() {
-            let coordinates = new Array(length);
+            let coordinates = new Array(_length);
             if (_axis === "x") {
                 let y = _position[1];
                 let x = _position[0];
@@ -24,8 +52,8 @@ export default function(name, length, position, axis) {
                 }
             }
             else{
-                let y = position[1];
-                let x = position[0];
+                let y = _position[1];
+                let x = _position[0];
                 for (let i = 0; i < _length; i++) {
                     coordinates[i] = [x, y + i];
                 }
