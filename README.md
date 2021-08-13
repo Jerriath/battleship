@@ -1,6 +1,6 @@
 This is a fun little project to practice and perform TDD via Jest in conjunction with webpack by creating the classic game, Battleships. 
 
-There are three main modules that are used to create the objects necessary to run the game:
+There are three main modules that are used to create the necessary objects that will be used in the game:
     1. shipFactory.js:
         This factory function is designed to be able to create different kinds of ships with different kinds of names (i.e. Carrier, Destroyer. etc.)
         These ship can either be instantiated with a desired position (done by the human player) or can be chosen randomly (done by the cpu player)
@@ -17,8 +17,12 @@ There are three main modules that are used to create the objects necessary to ru
         The player object will also be responsible for sending attacks to the enemy player (either with a desired coordinate or randomly) and this attack will
         then call the enemy gameboard's receiveAttack function.
 
-The last import module for actually running the game is the gameLoop.js module which is essentially (as describe above) the brains and logic of the entire game loop.
+Another three modules will be created for actually running the game (from beginning to end):
+    1. startGame.js
+        This module will be responsible for setting up all the ship objects as well as gameboard objects and initializing the gameboards for each player object. Essentially, this module will be the "start" of the game loop. Basically like the character creation phase of an rpg.
+    2. runGame.js
+        This module will be used for running the actual Battleship game. Basically, it will be responsible for organizing who will be attacking and be used to call each of the players' attack function. 
+    3. restartGame.js
+        This module will be used after the previous two for restarting the game state to a brand new game. Basically, it will remove all the old values (for the ship and gameboard) and create new ones for the next game.
 
-The index.js file will be used to import all the other modules and be used as the entry point for webpack to bundle everything into one main.js file.
-
-Another manipulateDom.js file will be used to create all the DOM elements (which will import our css file for styling) and append everything to the DOM. This file will also include methods to clear the elements on screen and rebuild new ones for when a new game is started.
+One more module will also be added for manipulating all aspects of the DOM.
