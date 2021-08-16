@@ -33,7 +33,7 @@ export default function() {
             _shipArray.push(ship);
         },
         placeShipRand: function(ship) {
-            let valid = this.checkValidShipCoords(ship);
+            let valid = false;
             while (!valid) {
                 ship.setPositionRand();
                 ship.setCoordinates();

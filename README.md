@@ -25,4 +25,4 @@ Another three modules will be created for actually running the game (from beginn
     3. restartGame.js
         This module will be used after the previous two for restarting the game state to a brand new game. Basically, it will remove all the old values (for the ship and gameboard) and create new ones for the next game.
 
-One more module will also be added for manipulating all aspects of the DOM.
+One more module will also be added for manipulating all aspects of the DOM (including adding event listeners; the anon callbacks have a good amount of logic in them).

@@ -1,12 +1,41 @@
 import styles from "../style.css";
+import { placeCarrier, placeBattleship, placeDestroyer, placeSubmarine, placePatrol} from "./startGame.js";
+
+//Array and index are for changing the placeCurrentShip function to place all ships
+let placeShipArray = [placeCarrier, placeBattleship, placeDestroyer, placeSubmarine, placePatrol];
+let index = 0;
+let placeCurrentShip = placeShipArray[index];
 
 //Cache DOM
 let container = document.querySelector("#container");
+
+//Add event listener to the start game button
+export function initBtns() {
+    let startBtn = document.querySelector("#startBtn");
+    startBtn.addEventListener("click", function() {
+        let welcomePage = document.querySelector("#welcomePage");
+        let welcomeText = document.querySelector("#welcomeText");
+        welcomeText.style.visibility = "hidden";
+        welcomePage.style.width = "0%";
+        startBtn.style.visibility = "hidden";
+    });
+    let axis = document.querySelector("#axis");
+    axis.addEventListener("click", function(e) {
+        if (e.target.innerHTML === "X"){
+            e.target.innerHTML = "Y";
+        }
+        else {
+            e.target.innerHTML = "X";
+        }
+    })
+}
+    
 
 //Display the primitive boards on screen
 export function renderInitBoards() {
     let playerBoard = document.createElement("div");
     playerBoard.classList.add("playerBoard");
+    playerBoard.classList.add("centerView");
     playerBoard.id = "playerBoard";
     for (let i = 0; i < 100; i ++) {
         let newSquare = document.createElement("div");
@@ -18,6 +47,7 @@ export function renderInitBoards() {
 
     let enemyBoard = document.createElement("div");
     enemyBoard.classList.add("enemyBoard");
+    enemyBoard.classList.add("transparent");
     enemyBoard.id = "enemyBoard";
     for (let i = 0; i < 100; i ++) {
         let newSquare = document.createElement("div");
@@ -78,4 +108,40 @@ export function addAttackListener(enemy, player) {
             }, 1000);
         })
     }
+}
+
+//Function for adding event Listeners for placing ships on playerBoard
+export function addPlaceListener(player) {
+    for (let i = 0; i < 100; i++) {
+        let currentId = "player" + i;
+        let currentSquare = document.querySelector("#" + currentId);
+        currentSquare.addEventListener("click", function(e) {
+            let x = null;
+            let y = null;
+            if (currentId.length === 7) {
+                x = parseInt(currentId.charAt(6));
+                y = 0;
+            }
+            else {
+                x = parseInt(currentId.charAt(7));
+                y = parseInt(currentId.charAt(6));
+                
+            }
+            let position = [x, y];
+            placeCurrentShip(player, position);
+            index++;
+            if (index === 5) {
+                console.log("index = 5");
+                index = 0;
+                placeCurrentShip = null;
+                document.querySelector("#playerBoard").classList.remove("centerView");
+                document.querySelector("#enemyBoard").classList.remove("transparent");
+            }
+        })
+    }
+}
+
+function highlight(e, length) {
+    let currentSquare = e.target;
+    //Need to figure out how to highlight "length" number of blocks in the correct axis orientation
 }
