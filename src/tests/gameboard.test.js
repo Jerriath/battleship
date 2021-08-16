@@ -2,7 +2,7 @@ import { expect } from "@jest/globals";
 import createGameboard from "../modules/gameboardFactory.js";
 import createShip from "../modules/shipFactory.js";
 
-test.skip("creates appropriately sized gameboard with false values", () => {
+test("creates appropriately sized gameboard with false values", () => {
     let newBoard = createGameboard();
     newBoard.initGameboard();
     expect(newBoard.getWidth()).toBe(10);
@@ -14,7 +14,7 @@ test.skip("creates appropriately sized gameboard with false values", () => {
     }
 })
 
-test.skip("gameboard can tell if all ships are sunk", () => {
+test("gameboard can tell if all ships are sunk", () => {
     let newBoard = createGameboard();
     newBoard.initGameboard();
     let carrier = createShip("carrier", 5, [1, 1], "y");
@@ -35,7 +35,7 @@ test.skip("gameboard can tell if all ships are sunk", () => {
     expect(newBoard.getStatus()).toBe(true);
 });
 
-test.skip("can hit ships stored in the gameboard's ships array", () => {
+test("can hit ships stored in the gameboard's ships array", () => {
     let newBoard = createGameboard();
     newBoard.initGameboard();
     let carrier = createShip("Carrier", 5, [1, 1], "y");

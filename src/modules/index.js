@@ -6,6 +6,8 @@ import { testGame } from "./gameLoop.js";
 import { renderInitBoards, addAttackListener } from "./manipulateDOM.js";
 
 
-testGame();
+let playerArray = testGame();
+let player = playerArray[0];
+let enemy = playerArray[1];
 renderInitBoards();
-addAttackListener();
+addAttackListener(enemy, player);
