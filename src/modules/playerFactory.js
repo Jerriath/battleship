@@ -14,12 +14,12 @@ export default function(gameboard) {
             while (!isNewCoord) {
                 randRow = Math.floor(Math.random() * 10);
                 randCol = Math.floor(Math.random() * 10);
-                if (!player.getGameboard().getBoard()[randRow][randCol]) {
+                if (!player.getGameboard().getBoard()[randCol][randRow]) {
                     isNewCoord = true;
                 }
             }
-            let response = player.getGameboard().receiveAttack([randRow, randCol]);
-            return response;
+            let response = player.getGameboard().receiveAttack([randCol, randRow]);
+            return randCol + "" + randRow + response;
         }
     }
 }

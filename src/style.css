@@ -1,41 +1,110 @@
+@font-face {
+    font-family: "MyFont";
+    font-weight: bold;
+    src: url("fonts/MachineStd-Bold.otf") format("opentype");
+}
+
 body {
     background-color: rgba(0, 0, 0, 0.2);
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+}
+
+h1 {
+    font-family: "MyFont";
 }
 
 #container {
-    width: 80%;
-    height: 60%;
+    width: 70%;
+    height: 40vw;
     position: relative;
     top: 150px; bottom: 0; right: 0; left: 0;
     margin: auto;
     font-size: 0;
+    position: relative;
+    top: 25%;
+}
 
+#welcomePage {
+    color: white;
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    text-align: center;
+    transition: all 0.5s linear;
+}
+
+#startBtn {
+    position: absolute;
+    top: 60%;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.titleFont {
+    height: 100px;
+    width: 400px;
+    font-size: 100px;
+    text-decoration: underline;
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    margin: auto;
+    margin-top: 25px;
+    text-align: center;
 }
 
 .playerBoard {
-    width: 600px;
-    height: 600px;
+    width: 30vw;
+    min-width: 300px;
+    height: 30vw;
+    min-height: 300px;
     position: absolute;
     left: 0;
     margin: auto;
     border: 1px solid black;
     display: inline-block;
+    transition: all 0.2s linear;
 }
 
 .enemyBoard {
-    width: 600px;
-    height: 600px;
+    width: 30vw;
+    min-width: 300px;
+    height: 30vw;
+    min-height: 300px;
     position: absolute;
     right: 0;
     margin: auto;
     border: 1px solid black;
     display: inline-block;
+    transition: all 0.2s linear;
+}
+
+.transparent {
+    opacity: 0;
+}
+
+.centerView {
+    width: 40vw;
+    height: 40vw;
+    right: 0;
 }
 
 .square {
-    width: 60px;
-    height: 60px;
+    width: 10%;
+    height: 10%;
     margin: 0px;
     outline: 1px solid black;
     display: inline-block;
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.square:hover {
+    background-color: rgba(0, 0, 0, 0.5);
 }

@@ -42,3 +42,4 @@ export function testGame() {
     let enemy = createPlayer(enemyBoard);
     return [player, enemy];
 }
+

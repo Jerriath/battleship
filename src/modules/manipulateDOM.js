@@ -1,13 +1,13 @@
 import styles from "../style.css";
 
 //Cache DOM
-let body = document.querySelector("body");
 let container = document.querySelector("#container");
 
 //Display the primitive boards on screen
 export function renderInitBoards() {
     let playerBoard = document.createElement("div");
     playerBoard.classList.add("playerBoard");
+    playerBoard.id = "playerBoard";
     for (let i = 0; i < 100; i ++) {
         let newSquare = document.createElement("div");
         newSquare.classList.add("square");
@@ -18,6 +18,7 @@ export function renderInitBoards() {
 
     let enemyBoard = document.createElement("div");
     enemyBoard.classList.add("enemyBoard");
+    enemyBoard.id = "enemyBoard";
     for (let i = 0; i < 100; i ++) {
         let newSquare = document.createElement("div");
         newSquare.classList.add("square");
@@ -27,7 +28,7 @@ export function renderInitBoards() {
     container.appendChild(enemyBoard);
 }
 
-//Needed to add event listeners to the enemy squares for initiating attacks
+//Needed to add event listeners to the enemy squares for initiating attacks; this function is a little long because it includes game functionality along with DOM manipulation
 export function addAttackListener(enemy, player) {
     for (let i = 0; i < 100; i++) {
         let currentId = "enemy" + i;
@@ -46,10 +47,35 @@ export function addAttackListener(enemy, player) {
             }
             let msg = player.attack(enemy, [x, y]);
             let clone = e.target.cloneNode(true);
-            clone.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+            if (msg.includes("missed")) {
+                clone.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+            }
+            else {
+                clone.style.backgroundColor = "red";
+            }
             e.target.replaceWith(clone);
             e.target.style.backgroundColor = "black";
-            console.log(msg);
+            console.log("Player Attack: " + msg);
+            setTimeout(function() {
+                let newMsg = enemy.attackRandom(player);
+                let coords = newMsg.slice(0, 2);
+                console.log(coords);
+                let square = null;
+                if (coords.charAt(1) === "0") {
+                    square = document.querySelector("#player"+coords.charAt(0))
+                }
+                else {
+                    square = document.querySelector("#player"+coords.charAt(1)+coords.charAt(0));
+                }
+                if (newMsg.includes("missed")) {
+                    square.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+                }
+                else {
+                    square.style.backgroundColor = "red";
+                }
+                newMsg = newMsg.substring(2);
+                console.log("Enemy Attack: " + newMsg);
+            }, 1000);
         })
     }
 }
