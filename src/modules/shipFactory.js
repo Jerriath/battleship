@@ -47,7 +47,7 @@ export default function(name, length, position, axis) {
         },
         setCoordinates: function() {
             let coordinates = new Array(_length);
-            if (_axis === "x") {
+            if (_axis === "X" || _axis ==="x") {
                 let y = _position[1];
                 let x = _position[0];
                 for (let i = 0; i < _length; i++) {

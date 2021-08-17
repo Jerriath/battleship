@@ -73,6 +73,8 @@ export function initGame() {
 export function placeCarrier(player, position) {
     let axis = document.querySelector("#axis").innerHTML;
     let newCarrier = createShip("Carrier", 5, position, axis);
+    newCarrier.setCoordinates();
+    console.log(newCarrier.getCoordinates())
     player.getGameboard().placeShip(newCarrier);
 }
 
@@ -80,6 +82,7 @@ export function placeCarrier(player, position) {
 export function placeBattleship(player, position) {
     let axis = document.querySelector("#axis").innerHTML;
     let newBattleship = createShip("Battleship", 4, position, axis);
+    newBattleship.setCoordinates();
     player.getGameboard().placeShip(newBattleship);
 }
 
@@ -88,6 +91,7 @@ export function placeBattleship(player, position) {
 export function placeDestroyer(player, position) {
     let axis = document.querySelector("#axis").innerHTML;
     let newDestroyer = createShip("Destroyer", 3, position, axis);
+    newDestroyer.setCoordinates();
     player.getGameboard().placeShip(newDestroyer);
 }
 
@@ -96,6 +100,7 @@ export function placeDestroyer(player, position) {
 export function placeSubmarine(player, position) {
     let axis = document.querySelector("#axis").innerHTML;
     let newSubmarine = createShip("Submarine", 3, position, axis);
+    newSubmarine.setCoordinates();
     player.getGameboard().placeShip(newSubmarine);
 }
 
@@ -104,6 +109,7 @@ export function placeSubmarine(player, position) {
 export function placePatrol(player, position) {
     let axis = document.querySelector("#axis").innerHTML;
     let newPatrol = createShip("Patrol", 2, position, axis);
+    newPatrol.setCoordinates(); 
     player.getGameboard().placeShip(newPatrol);
 }
 

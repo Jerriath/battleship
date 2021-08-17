@@ -1,10 +1,14 @@
 import styles from "../style.css";
 import { placeCarrier, placeBattleship, placeDestroyer, placeSubmarine, placePatrol} from "./startGame.js";
+import createShip from "./shipFactory.js"
 
 //Array and index are for changing the placeCurrentShip function to place all ships
 let placeShipArray = [placeCarrier, placeBattleship, placeDestroyer, placeSubmarine, placePatrol];
 let index = 0;
 let placeCurrentShip = placeShipArray[index];
+//Array of numbers to represent the length of the current ship beign placed to support highlighting
+let currentHighlight = [5, 4, 3, 3, 2]; //Carrier, battleship, destroyer, submarine, patrol
+let highlightIndex = 0;
 
 //Cache DOM
 let container = document.querySelector("#container");
@@ -115,7 +119,7 @@ export function addPlaceListener(player) {
     for (let i = 0; i < 100; i++) {
         let currentId = "player" + i;
         let currentSquare = document.querySelector("#" + currentId);
-        currentSquare.addEventListener("click", function(e) {
+        currentSquare.addEventListener("click", function() {
             let x = null;
             let y = null;
             if (currentId.length === 7) {
@@ -128,20 +132,73 @@ export function addPlaceListener(player) {
                 
             }
             let position = [x, y];
-            placeCurrentShip(player, position);
-            index++;
-            if (index === 5) {
-                console.log("index = 5");
-                index = 0;
-                placeCurrentShip = null;
-                document.querySelector("#playerBoard").classList.remove("centerView");
-                document.querySelector("#enemyBoard").classList.remove("transparent");
+            let dummyShip = createDummyShip(position);
+            if (player.getGameboard().checkValidShipCoords(dummyShip)) {
+                placeCurrentShip(player, position);
+                index++;
+                if (index === 5) {
+                    console.log("index = 5");
+                    for(let k = 0; k < 5; k++) {
+                        console.log(player.getGameboard().getShipArray()[k].getCoordinates());
+                    }
+                    index = 0;
+                    placeCurrentShip = null;
+                    document.querySelector("#playerBoard").classList.remove("centerView");
+                    document.querySelector("#enemyBoard").classList.remove("transparent");
+                }
+            }
+            else {
+                return "This is not a valid position";
+            }  
+        })
+    }
+}
+
+
+export function addHighlightListener() {
+    for (let i = 0; i < 100; i++) {
+        let currentId = "player" + i;
+        let currentShipLength = currentHighlight[highlightIndex];
+        let currentSquare = document.querySelector("#" + currentId);
+        currentSquare.addEventListener("hover", function() {
+            let axis = document.querySelector("#axis").innerHTML;
+            if (axis === "Y") {
+                for (let j = i; j < i + (10*currentShipLength); i+10) {
+                    let id = "player" + i;
+                    let square = document.querySelector(id);
+                    square.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+                }
+            }
+            else {
+                for (let j = i; j < i + currentShipLength; i++) {
+                    let id = "player" + i;
+                    let square = document.querySelector(id);
+                    square.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+                }
             }
         })
     }
 }
 
-function highlight(e, length) {
-    let currentSquare = e.target;
-    //Need to figure out how to highlight "length" number of blocks in the correct axis orientation
+//Function to create a dummy ship to check for valid placement
+function createDummyShip(position) {
+    let dummyShip = null;
+    switch (index) {
+        case 0:
+            dummyShip = createShip("Carrier", 5, position, document.querySelector("#axis").innerHTML);
+            break;
+        case 1: 
+            dummyShip = createShip("Battleship", 4, position, document.querySelector("#axis").innerHTML);
+            break;
+        case 2:
+            dummyShip = createShip("Destroyer", 3, position, document.querySelector("#axis").innerHTML);
+            break;
+        case 3:
+            dummyShip = createShip("Submarine", 3, position, document.querySelector("#axis").innerHTML);
+            break;
+        case 4: 
+            dummyShip = createShip("Patrol", 2, position, document.querySelector("#axis").innerHTML);
+    }
+    dummyShip.setCoordinates();
+    return dummyShip;
 }

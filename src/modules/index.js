@@ -1,6 +1,6 @@
 import styles from "../style.css"
 import { testGame, initGame } from "./startGame.js";
-import { initBtns, renderInitBoards, addAttackListener, addPlaceListener} from "./manipulateDOM.js";
+import { initBtns, renderInitBoards, addAttackListener, addPlaceListener, addHighlightListener} from "./manipulateDOM.js";
 import { placeCarrier, placeBattleship, placeDestroyer, placeSubmarine, placePatrol} from "./startGame.js";
 
 initBtns();
@@ -9,4 +9,5 @@ let player = playerArray[0];
 let enemy = playerArray[1];
 renderInitBoards();
 addPlaceListener(player);
+addHighlightListener(player);
 addAttackListener(enemy, player);
