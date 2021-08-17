@@ -12,6 +12,7 @@ export default function(name, length, position, axis) {
         getLength: function() {return _length},
         getPosition: function() {return _position},
         getCoordinates: function() {return _coordinates},
+        getAxis: function() {return _axis},
         getIsSunk: function() {return _isSunk},
         //Mutator functions
         setPosition: function(coordinates) {

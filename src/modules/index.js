@@ -9,5 +9,5 @@ let player = playerArray[0];
 let enemy = playerArray[1];
 renderInitBoards();
 addPlaceListener(player);
-addHighlightListener(player);
+addHighlightListener();
 addAttackListener(enemy, player);

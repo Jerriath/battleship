@@ -8,7 +8,6 @@ let index = 0;
 let placeCurrentShip = placeShipArray[index];
 //Array of numbers to represent the length of the current ship beign placed to support highlighting
 let currentHighlight = [5, 4, 3, 3, 2]; //Carrier, battleship, destroyer, submarine, patrol
-let highlightIndex = 0;
 
 //Cache DOM
 let container = document.querySelector("#container");
@@ -120,6 +119,9 @@ export function addPlaceListener(player) {
         let currentId = "player" + i;
         let currentSquare = document.querySelector("#" + currentId);
         currentSquare.addEventListener("click", function() {
+
+            
+            //Section deals with actually placing the ship into the shipArray
             let x = null;
             let y = null;
             if (currentId.length === 7) {
@@ -134,6 +136,33 @@ export function addPlaceListener(player) {
             let position = [x, y];
             let dummyShip = createDummyShip(position);
             if (player.getGameboard().checkValidShipCoords(dummyShip)) {
+
+
+                //Section deals with highlighting the squares that the ship is placed in
+                let currentShipLength = currentHighlight[index];
+                let axis = document.querySelector("#axis").innerHTML;
+                if (axis === "Y" || axis === "y") {
+                    for (let j = i; j < (i + (10*currentShipLength)); j+=10) {
+                        if (j > 99) {//Checks for if j is leaving the grid bounds
+                            break;
+                        }
+                        let id = "#player" + j;
+                        let square = document.querySelector(id);
+                        square.classList.add("highlighted");
+                    }
+                }
+                else {
+                    for (let j = i; j < (i + currentShipLength); j++) {
+                        if (j > (Math.floor((i+10)/10))*10-1){//Checks for if j is leaving the grid bounds
+                            break;
+                        }
+                        let id = "#player" + j;
+                        let square = document.querySelector(id);
+                        square.classList.add("highlighted");
+                    }
+                }
+
+
                 placeCurrentShip(player, position);
                 index++;
                 if (index === 5) {
@@ -149,35 +178,78 @@ export function addPlaceListener(player) {
             }
             else {
                 return "This is not a valid position";
-            }  
+            } 
+            recreateSquares(player);
         })
     }
 }
 
-
+//Listener to highlight the squares where the ship will be placed
 export function addHighlightListener() {
     for (let i = 0; i < 100; i++) {
         let currentId = "player" + i;
-        let currentShipLength = currentHighlight[highlightIndex];
+        let currentShipLength = currentHighlight[index];
         let currentSquare = document.querySelector("#" + currentId);
-        currentSquare.addEventListener("hover", function() {
+        //The listener used to highlight
+        currentSquare.addEventListener("mouseenter", function() {
             let axis = document.querySelector("#axis").innerHTML;
-            if (axis === "Y") {
-                for (let j = i; j < i + (10*currentShipLength); i+10) {
-                    let id = "player" + i;
+            if (axis === "Y" || axis === "y") {
+                for (let j = i; j < (i + (10*currentShipLength)); j+=10) {
+                    if (j > 99) {//Checks for if j is leaving the grid bounds
+                        break;
+                    }
+                    let id = "#player" + j;
                     let square = document.querySelector(id);
                     square.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
                 }
             }
             else {
-                for (let j = i; j < i + currentShipLength; i++) {
-                    let id = "player" + i;
+                for (let j = i; j < (i + currentShipLength); j++) {
+                    if (j > (Math.floor((i+10)/10))*10-1){//Checks for if j is leaving the grid bounds
+                        break;
+                    }
+                    let id = "#player" + j;
                     let square = document.querySelector(id);
                     square.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
                 }
             }
         })
+        //The listener used to unhighlight
+        currentSquare.addEventListener("mouseleave", function() {
+            let axis = document.querySelector("#axis").innerHTML;
+            if (axis === "Y" || axis === "y") {
+                for (let j = i; j < (i + (10*currentShipLength)); j+=10) {
+                    if (j > 99) {//Checks for if j is leaving the grid bounds
+                        break;
+                    }
+                    let id = "#player" + j;
+                    let square = document.querySelector(id);
+                    square.style.backgroundColor = "";
+                }
+            }
+            else {
+                for (let j = i; j < (i + currentShipLength); j++) {
+                    if (j > (Math.floor((i+10)/10))*10-1){//Checks for if j is leaving the grid bounds
+                        break;
+                    }
+                    let id = "#player" + j;
+                    let square = document.querySelector(id);
+                    square.style.backgroundColor = "";
+                }
+            }
+        })
     }
+}
+
+//Function to recreate all the squares and reattach all the listeners (needed to change highlight length)
+function recreateSquares(player) {
+    for (let i = 0; i < 100; i++) {
+        let currentId = "player" + i;
+        let currentSquare = document.querySelector("#" + currentId);
+        currentSquare.replaceWith(currentSquare.cloneNode(true));
+    }
+    addPlaceListener(player);
+    addHighlightListener();
 }
 
 //Function to create a dummy ship to check for valid placement

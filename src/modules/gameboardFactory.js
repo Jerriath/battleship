@@ -43,6 +43,7 @@ export default function() {
         },
         checkValidShipCoords: function(ship) {
             let valid = true;
+            //Checks to see if there are overlaps between pre-existing ships
             for (let i = 0; i < _shipArray.length; i++) {
                 for (let j = 0; j < _shipArray[i].getCoordinates().length; j++) {
                     let coordsLength = ship.getCoordinates().length;
@@ -55,6 +56,19 @@ export default function() {
                             }
                         }
                     }
+                }
+            }
+            //Checks to see if the new ship goes out of the grib bounds
+            let x = ship.getPosition()[0];
+            let y = ship.getPosition()[1];
+            if (ship.getAxis() === "Y" || ship.getAxis() ==="y") {
+                if (y + ship.getLength() > 10) {
+                    valid = false;
+                }
+            }
+            else {
+                if (x + ship.getLength() > 10) {
+                    valid = false;
                 }
             }
             return valid;
