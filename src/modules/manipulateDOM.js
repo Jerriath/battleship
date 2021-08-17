@@ -51,3 +51,10 @@ export function renderInitBoards() {
     }
     container.appendChild(enemyBoard);
 }
+
+//Function to update the messageBoard with the console messages that report what has happened
+export function updateMsgBoard(msg) {
+    console.log("Hello");
+    let msgBoard = document.querySelector("#msgBoard");
+    msgBoard.textContent = msg;
+}

@@ -1,9 +1,11 @@
 import styles from "../style.css";
 import { placeCarrier, placeBattleship, placeDestroyer, placeSubmarine, placePatrol} from "./startGame.js";
 import createShip from "./shipFactory.js"
+import { updateMsgBoard } from "./manipulateDOM.js";
 
 //Array and index are for changing the placeCurrentShip function to place all ships
 let placeShipArray = [placeCarrier, placeBattleship, placeDestroyer, placeSubmarine, placePatrol];
+let shipStringArray = ["Carrier", "Battleship", "Destroyer", "Submarine", "Patrol"];
 let index = 0;
 //Array of numbers to represent the length of the current ship beign placed to support highlighting
 let currentHighlight = [5, 4, 3, 3, 2]; //Carrier, battleship, destroyer, submarine, patrol
@@ -38,8 +40,8 @@ export function addAttackListener(enemy, player) {
                 clone.style.backgroundColor = "red";
             }
             e.target.replaceWith(clone);
-            clone.style.backgroundColor = "black";
             console.log("Player Attack: " + msg);
+            updateMsgBoard("Player Attack: " + msg);
             setTimeout(function() {
                 let newMsg = enemy.attackRandom(player);
                 let coords = newMsg.slice(0, 2);
@@ -61,7 +63,9 @@ export function addAttackListener(enemy, player) {
                 }
                 newMsg = newMsg.substring(2);
                 console.log("Enemy Attack: " + newMsg);
-            }, 1000);
+                updateMsgBoard("Enemy Attack: " + newMsg);
+
+            }, 1500);
         })
     }
 }
@@ -135,6 +139,10 @@ export function addPlaceListener(player) {
                 return "This is not a valid position";
             } 
         })
+    }
+    updateMsgBoard("Please choose a location to place your " + shipStringArray[index] + ".");
+    if (index === 5) {
+        updateMsgBoard("Choose a location to attack.");
     }
 }
 
