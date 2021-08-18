@@ -58,3 +58,13 @@ export function updateMsgBoard(msg) {
     let msgBoard = document.querySelector("#msgBoard");
     msgBoard.textContent = msg;
 }
+
+//Function for displaying a black screen
+export function toggleBlackScreen() {
+    if (blackScreen.classList.length === 0) {
+        blackScreen.classList.add("transparent");
+    }
+    else {
+        blackScreen.classList.remove("transparent");
+    }
+}

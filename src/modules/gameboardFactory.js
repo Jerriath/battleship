@@ -82,11 +82,22 @@ export default function() {
                     if (coordinate[0] === coord[0]) {
                         if (coordinate[1] === coord[1]) {
                             message = currentShip.hit(coordinate);
+                            this.updateStatus();
                         }
                     }
                 })
             }
             return message;
+        },
+        checkIfLost: function() {
+            let lost = true;
+            let numOfShips = _shipArray.length;
+            for (let i = 0; i < numOfShips; i++) {
+                if (_shipArray[i].getCoordinates().length > 0) {
+                    lost = false;
+                }
+            }
+            return lost;
         }
     }
 }

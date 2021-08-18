@@ -72,3 +72,17 @@ test("can place ships randomly; placeShipRand() works", () => {
     console.log(destroyer.getCoordinates());
     expect(newBoard.getShipArray().length).toBe(2);
 })
+
+test("can the gameboard tell if game is lost", () => {
+    let newBoard = createGameboard();
+    newBoard.initGameboard();
+    let carrier = createShip("Carrier", 5, [0, 0], "x");
+    carrier.setCoordinates();
+    newBoard.placeShip(carrier);
+    newBoard.receiveAttack([0, 0]);
+    newBoard.receiveAttack([1, 0]);
+    newBoard.receiveAttack([2, 0]);
+    newBoard.receiveAttack([3, 0]);
+    newBoard.receiveAttack([4, 0]);
+    expect(newBoard.checkIfLost()).toBe(true);
+})

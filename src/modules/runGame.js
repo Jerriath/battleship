@@ -1,7 +1,7 @@
 import styles from "../style.css";
-import { placeCarrier, placeBattleship, placeDestroyer, placeSubmarine, placePatrol} from "./startGame.js";
+import { placeCarrier, placeBattleship, placeDestroyer, placeSubmarine, placePatrol, initGame} from "./startGame.js";
 import createShip from "./shipFactory.js"
-import { updateMsgBoard } from "./manipulateDOM.js";
+import { renderInitBoards, updateMsgBoard, toggleBlackScreen } from "./manipulateDOM.js";
 
 //Array and index are for changing the placeCurrentShip function to place all ships
 let placeShipArray = [placeCarrier, placeBattleship, placeDestroyer, placeSubmarine, placePatrol];
@@ -32,6 +32,7 @@ export function addAttackListener(enemy, player) {
                 
             }
             let msg = player.attack(enemy, [x, y]);
+            
             let clone = e.target.cloneNode(true);
             if (msg.includes("missed")) {
                 clone.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
@@ -40,12 +41,17 @@ export function addAttackListener(enemy, player) {
                 clone.style.backgroundColor = "red";
             }
             e.target.replaceWith(clone);
-            console.log("Player Attack: " + msg);
             updateMsgBoard("Player Attack: " + msg);
-            setTimeout(function() {
+            if (enemy.getGameboard().getStatus())
+            {
+                console.log(true);
+                restartGame("Player ");
+            }
+            else {
+                console.log(false);
+                setTimeout(function() {
                 let newMsg = enemy.attackRandom(player);
                 let coords = newMsg.slice(0, 2);
-                console.log(coords);
                 let square = null;
                 if (coords.charAt(1) === "0") {
                     square = document.querySelector("#player"+coords.charAt(0))
@@ -62,10 +68,12 @@ export function addAttackListener(enemy, player) {
                     square.style.backgroundColor = "red";
                 }
                 newMsg = newMsg.substring(2);
-                console.log("Enemy Attack: " + newMsg);
                 updateMsgBoard("Enemy Attack: " + newMsg);
-
-            }, 1500);
+                if (player.getGameboard().getStatus()) {
+                    restartGame("Enemy ");
+                }
+                }, 1500);
+            }
         })
     }
 }
@@ -95,7 +103,7 @@ export function addPlaceListener(player) {
             if (player.getGameboard().checkValidShipCoords(dummyShip)) {
 
 
-                //Section deals with highlighting the squares that the ship is placed in
+                //Section deals with marking the squares that the ship IS placed in
                 let currentShipLength = currentHighlight[index];
                 let axis = document.querySelector("#axis").innerHTML;
                 if (axis === "Y" || axis === "y") {
@@ -124,11 +132,6 @@ export function addPlaceListener(player) {
                 index++;
                 recreateSquares(player);
                 if (index === 5) {
-                    console.log("index = 5");
-                    removePlayerListeners();
-                    for(let k = 0; k < 5; k++) {
-                        console.log(player.getGameboard().getShipArray()[k].getCoordinates());
-                    }
                     index = 0;
                     placeCurrentShip = null;
                     document.querySelector("#playerBoard").classList.remove("centerView");
@@ -146,7 +149,7 @@ export function addPlaceListener(player) {
     }
 }
 
-//Listener to highlight the squares where the ship will be placed
+//Listener to highlight the squares where the ship WILL BE placed; only active in the placing ship phase
 export function addHighlightListener() {
     for (let i = 0; i < 100; i++) {
         let currentId = "player" + i;
@@ -203,6 +206,10 @@ export function addHighlightListener() {
     }
 }
 
+
+//The sectino below holds a couple of helper functions
+
+
 //Function for removing all Listeners (on playerBoard)
 function removePlayerListeners() {
     for (let i = 0; i < 100; i++) {
@@ -210,6 +217,44 @@ function removePlayerListeners() {
         let currentSquare = document.querySelector("#" + currentId);
         currentSquare.replaceWith(currentSquare.cloneNode(true));
     }
+}
+
+//Function for removing all listeners (on enemyBoard)
+function removeEnemyListeners() {
+    for (let i = 0; i < 100; i++) {
+        let currentId = "enemy" + i;
+        let currentSquare = document.querySelector("#" + currentId);
+        currentSquare.replaceWith(currentSquare.cloneNode(true));
+    }
+}
+
+//Function that will remove all listeners and display a restart game button
+function restartGame(winner) {
+    updateMsgBoard(winner + "has won the game.");
+    removePlayerListeners();
+    removeEnemyListeners();
+    let restart = document.createElement("button");
+    restart.classList.add("restart");
+    restart.textContent = "Restart Game?";
+    document.querySelector("#container").appendChild(restart);
+    restart.addEventListener("click", function() {
+        toggleBlackScreen();
+        restart.remove();
+        setTimeout(toggleBlackScreen, 2000);
+        setTimeout(function() {
+            let playerArray = initGame();
+            let player = playerArray[0];
+            let enemy = playerArray[1];
+            let container = document.querySelector("#container");
+            while (container.firstChild) {
+                container.firstChild.remove();
+            }
+            renderInitBoards();
+            addPlaceListener(player);
+            addHighlightListener();
+            addAttackListener(enemy, player);
+        }, 1000);
+    });
 }
 
 //Function to recreate all the squares and reattach all the listeners (needed to change highlight length)
@@ -245,3 +290,4 @@ function createDummyShip(position) {
     dummyShip.setCoordinates();
     return dummyShip;
 }
+

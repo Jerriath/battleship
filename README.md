@@ -17,12 +17,10 @@ There are three main modules that are used to create the necessary objects that 
         The player object will also be responsible for sending attacks to the enemy player (either with a desired coordinate or randomly) and this attack will
         then call the enemy gameboard's receiveAttack function.
 
-Another three modules will be created for actually running the game (from beginning to end):
+Another two modules will be created for actually running the game (from beginning to end):
     1. startGame.js
-        This module will be responsible for setting up all the ship objects as well as gameboard objects and initializing the gameboards for each player object. Essentially, this module will be the "start" of the game loop. Basically like the character creation phase of an rpg.
+        This module will be responsible for setting up all the ship objects as well as gameboard objects and initializing the gameboards for each player object. Essentially, this module will be the "start" of the game loop. Basically like the character creation phase of an rpg. This module will also be called again for creating a new game at the end of the prior game.
     2. runGame.js
-        This module will be used for running the actual Battleship game. Basically, it will be responsible for organizing who will be attacking and be used to call each of the players' attack function. 
-    3. restartGame.js
-        This module will be used after the previous two for restarting the game state to a brand new game. Basically, it will remove all the old values (for the ship and gameboard) and create new ones for the next game.
+        This module will be used for running the actual Battleship game. Basically, it will be responsible for attaching event listeners to all the squares and each player-initiated attack will be followed by an enemy attack after a short delay. This is essentially the module that acts as the game loop.
 
-One more module will also be added for manipulating all aspects of the DOM (including adding event listeners; the anon callbacks have a good amount of logic in them).
+One more module will also be added for manipulating all aspects of the DOM like rendering the board or changing the msgBoard.
